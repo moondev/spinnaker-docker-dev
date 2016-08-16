@@ -1,11 +1,11 @@
 bakery:
   allowMissingPackageInstallation: true
-  baseUrl: http://rosco-alias:8087
+  baseUrl: http://spinnaker-rosco:8087
   extractBuildDetails: true
   propagateCloudProviderType: true
 default:
   bake:
-    account: minikube
+    account: default
   securityGroups: null
   vpc:
     securityGroups: null
@@ -17,7 +17,7 @@ flex:
 front50:
   baseUrl: http://front50-alias:8080
 igor:
-  enabled: true
+  enabled: false
   baseUrl: http://igor-alias:8088
 kato:
   baseUrl: http://clouddriver-alias:7002

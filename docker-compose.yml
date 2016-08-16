@@ -67,75 +67,15 @@ services:
     entrypoint: /bin/bash
     command: ['-c', 'cd /app; GRADLE_USER_HOME=cache ./gradlew bootRun']
 
-#   clouddriver:
-#     image: quay.io/spinnaker/clouddriver
-#     networks:
-#      internal:
-#        aliases:
-#         - clouddriver-alias
-#     volumes_from:
-#      - configdata
-#     volumes:
-#      - ./minikube.config:/root/.kube/config
-#      - ~/.minikube/apiserver.crt:/root/.kube/apiserver.crt
-#      - ~/.minikube/apiserver.key:/root/.kube/apiserver.key
-#     depends_on:
-#      - front50
-#      - redis
-
-#   rosco:
-#     image: quay.io/spinnaker/rosco
-#     networks:
-#      internal:
-#        aliases:
-#         - rosco-alias
-#     depends_on:
-#      - clouddriver
-#     volumes_from:
-#      - configdata
-
-#   orca:
-#     image: quay.io/spinnaker/orca
-#     networks:
-#      internal:
-#        aliases:
-#         - orca-alias
-#     depends_on:
-#      - rosco
-#     volumes_from:
-#      - configdata
-
-#   echo:
-#     image: quay.io/spinnaker/echo
-#     networks:
-#      internal:
-#        aliases:
-#         - echo-alias
-#     depends_on:
-#      - orca
-#     volumes_from:
-#      - configdata
-
-#   gate:
-#     image: quay.io/spinnaker/gate
-#     networks:
-#      internal:
-#        aliases:
-#         - gate-alias
-#     depends_on:
-#      - echo
-#     volumes_from:
-#      - configdata
-
-#   deck:
-#     image: nginx
-#     networks:
-#       - internal
-#       - default
-#     depends_on:
-#      - gate
-#     volumes:
-#      - ./deck:/opt/deck
-#      - ./nginx.conf:/etc/nginx/nginx.conf
-#     ports:
-#      - "9000:80"
+  deck:
+    image: quay.io/spinnaker/deck
+    networks:
+      - internal
+      - default
+    entrypoint: /bin/bash
+    command: ['-c', 'cd /app; npm install; node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --host 0.0.0.0 --port 9000']
+    volumes:
+     - ./services/deck:/app
+    ports:
+     - "9000:80"
+    environment: ['CI=true','AUTH_ENABLED=true', 'API_HOST=http://localhost:8084', 'BAKERY_DETAIL_URL=http://localhost:8087']

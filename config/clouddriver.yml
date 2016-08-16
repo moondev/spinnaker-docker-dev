@@ -1,5 +1,18 @@
 aws:
-  enabled: false
+  enabled: true
+  defaults:
+    iamRole: BaseIAMRole
+  defaultRegions:
+    - name: us-east-1
+  defaultFront50Template: http://front50-alias:8080
+  defaultKeyPairTemplate: keypair
+  migration:
+    infrastructureApplications: null
+  # an empty list means we are directly managing the AWS account we have credentials for (named default.account.env)
+  # see prod profile section below for an example configuration to manage other accounts via STS assume role
+  accounts: []
+
+
 azure:
   enabled: false
 cf:
@@ -10,7 +23,7 @@ credentials:
   primaryAccountTypes: default
 default:
   account:
-    env: minikube
+    env: default
 
 
 
@@ -24,6 +37,8 @@ dockerRegistry:
 
 redis:
   connection: redis://redis-alias:6379
+  scheduler: default
+  parallelism: -1
 server:
   port: 7002
 services:
