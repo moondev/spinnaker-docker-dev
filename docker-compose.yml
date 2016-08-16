@@ -59,10 +59,8 @@ services:
   gate:
     image: java:8
     networks:
-     - internal:
-        aliases:
-         - gate-alias
-     - default
+      - internal
+      - default
     ports:
      - "8084:8084"
     volumes:
