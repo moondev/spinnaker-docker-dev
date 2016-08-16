@@ -35,6 +35,7 @@ services:
 
   clouddriver:
     image: java:8
+    env_file: .env
     networks:
      internal:
        aliases:
