@@ -12,7 +12,7 @@ services:
   orca:
     baseUrl: http://orca-alias:8083
   igor:
-    enabled: true
+    enabled: false
     baseUrl: http://igor-alias:8088
   rosco:
     enabled: false

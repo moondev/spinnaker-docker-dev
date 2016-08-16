@@ -80,13 +80,13 @@ services:
     command: ['-c', 'cd /app; GRADLE_USER_HOME=cache ./gradlew bootRun']
 
   deck:
-    image: quay.io/spinnaker/deck
+    image: chadmoon/dockernginx
     networks:
       - internal
     entrypoint: /bin/bash
-    command: ['-c', 'cd /app; npm install; node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --host 0.0.0.0 --port 9000']
+    command: ['-c', 'cd /app; npm install; npm run build; mv /app/build/webpack /opt/deck; nginx -g "daemon off;"']
     volumes:
      - ./services/deck:/app
     ports:
-     - "9000:9000"
-    environment: ['CI=true','AUTH_ENABLED=true', 'API_HOST=http://localhost:8084', 'BAKERY_DETAIL_URL=http://localhost:8087']
+     - "9000:80"
+    environment: ['CI=true','AUTH_ENABLED=true', 'API_HOST=http://localhost:8084/', 'BAKERY_DETAIL_URL=http://localhost:8087/']
