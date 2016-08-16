@@ -8,13 +8,13 @@ cassandra:
 
 endpoints.health.sensitive: false
 front50:
-  baseUrl: http://spinnaker-front50:8080
+  baseUrl: http://front50-alias:8080
 hipchat:
   enabled: false
 mail:
   enabled: false
 orca:
-  baseUrl: http://spinnaker-orca:8083
+  baseUrl: http://orca-alias:8083
 scheduler:
   cron:
     timezone: west
@@ -33,7 +33,7 @@ spinnaker:
     enabled: true
     embedded: false
     cluster: 'Test Cluster'
-    host: spinnaker-cassandra
+    host: cassandra-alias
     keyspace: 'front50'
     name: default
 spring:

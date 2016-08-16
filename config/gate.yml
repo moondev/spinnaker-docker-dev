@@ -1,19 +1,19 @@
 redis:
-  connection: redis://spinnaker-redis:6379
+  connection: redis://redis-alias:6379
 server:
   port: 8084
 services:
   clouddriver:
-    baseUrl: http://spinnaker-clouddriver:7002
+    baseUrl: http://clouddriver-alias:7002
   deck:
     baseUrl: http://localhost:9000
   front50:
-    baseUrl: http://spinnaker-front50:8080
+    baseUrl: http://front50-alias:8080
   orca:
-    baseUrl: http://spinnaker-orca:8083
+    baseUrl: http://orca-alias:8083
   igor:
     enabled: true
-    baseUrl: http://spinnaker-igor:8088
+    baseUrl: http://igor-alias:8088
   rosco:
     enabled: true
-    baseUrl: http://spinnaker-rosco:8087
+    baseUrl: http://rosco-alias:8087

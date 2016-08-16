@@ -6,22 +6,21 @@ networks:
 
 services:
 
-#   redis:
-#     image: redis
-#     networks:
-#      internal:
-#        aliases:
-#         - redis-alias
+  redis:
+    image: redis
+    networks:
+     internal:
+       aliases:
+        - redis-alias
 
-#   cassandra:
-#     image: chadmoon/cassandra-spinnaker
-#     networks:
-#      internal:
-#        aliases:
-#         - cassandra-alias
-#     environment:
-#       CASSANDRA_START_RPC: "true"
-
+  cassandra:
+    image: chadmoon/cassandra-spinnaker
+    networks:
+     internal:
+       aliases:
+        - cassandra-alias
+    environment:
+      CASSANDRA_START_RPC: "true"
 
   front50:
     image: java:8
@@ -34,6 +33,38 @@ services:
     entrypoint: /bin/bash
     command: ['-c', 'cd /app; GRADLE_USER_HOME=cache ./gradlew bootRun']
 
+  clouddriver:
+    image: java:8
+    networks:
+     internal:
+       aliases:
+        - clouddriver-alias
+    volumes:
+     - ./services/clouddriver:/app
+    entrypoint: /bin/bash
+    command: ['-c', 'cd /app; GRADLE_USER_HOME=cache ./gradlew bootRun']
+
+  orca:
+    image: java:8
+    networks:
+     internal:
+       aliases:
+        - orca-alias
+    volumes:
+     - ./services/orca:/app
+    entrypoint: /bin/bash
+    command: ['-c', 'cd /app; GRADLE_USER_HOME=cache ./gradlew bootRun']
+
+  gate:
+    image: java:8
+    networks:
+     internal:
+       aliases:
+        - gate-alias
+    volumes:
+     - ./services/gate:/app
+    entrypoint: /bin/bash
+    command: ['-c', 'cd /app; GRADLE_USER_HOME=cache ./gradlew bootRun']
 
 #   clouddriver:
 #     image: quay.io/spinnaker/clouddriver
