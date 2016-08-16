@@ -1,18 +1,27 @@
 # spinnaker-docker-dev
+Requires docker
 
-clone sources and substitute configs from config folder
+Ensure you have at least 2 cpus and 6gb of memory provisioned in your docker settings
+
+## Step 1: Fill out our aws secret and key inside .env
+
+## Step : clones sources and swaps configs
 ```
 python clone.py
 ```
 
-start services
+## Step 3: start all services (they will take a bit of time to build for the first time)
 ```
 docker-compose up
 ```
 
+When services finish building deck will be available on localhost:9000
+
+All code is available to edit in the services folder, once you make a change you just need to restart the individual service
+
 restart a service (code or config change)
 ```
-docker-compose clouddriver restart
+docker-compose restart clouddriver
 ```
 
 stop all services

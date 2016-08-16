@@ -59,9 +59,12 @@ services:
   gate:
     image: java:8
     networks:
-     internal:
-       aliases:
-        - gate-alias
+     - internal:
+        aliases:
+         - gate-alias
+     - default
+    ports:
+     - "8084:8084"
     volumes:
      - ./services/gate:/app
     entrypoint: /bin/bash
@@ -77,5 +80,5 @@ services:
     volumes:
      - ./services/deck:/app
     ports:
-     - "9000:80"
+     - "9000:9000"
     environment: ['CI=true','AUTH_ENABLED=true', 'API_HOST=http://localhost:8084', 'BAKERY_DETAIL_URL=http://localhost:8087']
