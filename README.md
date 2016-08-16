@@ -12,7 +12,7 @@ python clone.py
 
 ## Step 3: start all services (they will take a bit of time to build for the first time)
 ```
-docker-compose up
+python start_all.py
 ```
 
 When services finish building deck will be available on localhost:9000

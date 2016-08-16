@@ -6,6 +6,13 @@ networks:
 
 services:
 
+  pingbox:
+    image: chadmoon/nmap
+    networks:
+      internal:
+        aliases:
+        - nmap-alias
+
   redis:
     image: redis
     networks:
@@ -59,8 +66,12 @@ services:
   gate:
     image: java:8
     networks:
-      - internal
-      - default
+      internal:
+        aliases:
+         - gate-alias
+      default:
+        aliases:
+         - deck-external
     ports:
      - "8084:8084"
     volumes:
@@ -72,7 +83,6 @@ services:
     image: quay.io/spinnaker/deck
     networks:
       - internal
-      - default
     entrypoint: /bin/bash
     command: ['-c', 'cd /app; npm install; node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --host 0.0.0.0 --port 9000']
     volumes:
