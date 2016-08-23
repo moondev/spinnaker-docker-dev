@@ -102,7 +102,7 @@ services:
         aliases:
          - deck-external
     ports:
-     - "9000:9000"
+     - "9000:80"
     volumes:
      - ./services/deck/build/webpack:/opt/deck
      - ./config/nginx.conf:/etc/nginx/nginx.conf
