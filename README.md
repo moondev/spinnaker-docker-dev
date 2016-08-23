@@ -5,7 +5,7 @@ Ensure you have at least 2 cpus and 6gb of memory provisioned in your docker set
 
 ## Step 1: Fill out our aws secret and key inside .env
 
-## Step : clones sources and swaps configs
+## Step : clones sources and swaps configs and builds deck in a temporary container
 ```
 python clone.py
 ```
