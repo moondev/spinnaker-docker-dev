@@ -15,5 +15,5 @@ services:
     enabled: false
     baseUrl: http://igor-alias:8088
   rosco:
-    enabled: false
+    enabled: true
     baseUrl: http://rosco-alias:8087

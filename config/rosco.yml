@@ -1,12 +1,174 @@
-aws:
-  enabled: false
-docker:
-  enabled: false
-google:
-  enabled: false
-redis:
-  connection: redis://redis-alias:6379
-rosco:
-  configDir: /opt/rosco/config/packer
 server:
   port: 8087
+
+rosco:
+  configDir: /opt/rosco/config/packer
+
+redis:
+  connection: redis://redis-alias:6379
+
+executionStatusToBakeStates:
+  associations:
+    - executionStatus: PREPARING
+      bakeState: PENDING
+    - executionStatus: FETCHING_IMAGE
+      bakeState: PENDING
+    - executionStatus: RUNNING
+      bakeState: RUNNING
+    - executionStatus: CANCELED
+      bakeState: CANCELED
+    - executionStatus: SUCCESSFUL
+      bakeState: COMPLETED
+    - executionStatus: FAILED
+      bakeState: CANCELED
+
+executionStatusToBakeResults:
+  associations:
+    - executionStatus: SUCCESSFUL
+      bakeResult: SUCCESS
+    - executionStatus: FAILED
+      bakeResult: FAILURE
+
+# If a repository is set here, it will be added by packer as an apt repository when baking images for GCE and AWS.
+# It is safe to leave this out (or blank) if you do not need to configure your own apt repository.
+# The following commented-out line is an example of what a valid entry looks like.
+debianRepository: 
+
+defaultCloudProviderType: aws
+
+aws:
+  enabled: true
+  bakeryDefaults:
+    awsAssociatePublicIpAddress: true
+    templateFile: aws-ebs.json
+    defaultVirtualizationType: hvm
+    baseImages:
+    # TODO(duftler): Identify proper base amis.
+    # TODO(duftler): Support additional store types beyond ebs.
+    # TODO(duftler): Support additional operating systems.
+    # TODO(duftler): Feels like just about everything here could be (optionally) specified per bake.
+    - baseImage:
+        id: ubuntu
+        shortDescription: v12.04
+        detailedDescription: Ubuntu Precise Pangolin v12.04
+        packageType: deb
+      virtualizationSettings:
+      - region: us-east-1
+        virtualizationType: hvm
+        instanceType: t2.micro
+        sourceAmi: ami-d4aed0bc
+        sshUserName: ubuntu
+      - region: us-west-2
+        virtualizationType: hvm
+        instanceType: t2.micro
+        sourceAmi: ami-59396769
+        sshUserName: ubuntu
+      - region: us-east-1
+        virtualizationType: pv
+        instanceType: m3.medium
+        sourceAmi: ami-8007b2e8
+        sshUserName: ubuntu
+        shortDescription: v12.04
+        detailedDescription: Ubuntu Precise Pangolin v12.04
+        packageType: deb
+      - region: us-east-1
+        virtualizationType: hvm
+        instanceType: m1.small
+        sourceAmi: ami-73ed0e13
+        sshUserName: ubuntu
+      - region: us-west-2
+        virtualizationType: hvm
+        instanceType: t2.micro
+        sourceAmi: ami-59396769
+        sshUserName: ubuntu
+      - region: us-east-1
+        virtualizationType: pv
+        instanceType: m3.medium
+        sourceAmi: ami-8007b2e8
+        sshUserName: ubuntu
+#      No exact equivalent available in us-west-2
+#      - region: us-west-2
+#        virtualizationType: pv
+#        instanceType: m3.medium
+#        sourceAmi:
+#        sshUserName: ubuntu
+    - baseImage:
+        id: trusty
+        shortDescription: v14.04
+        detailedDescription: Ubuntu Trusty Tahr v14.04
+        packageType: deb
+      virtualizationSettings:
+      - region: us-east-1
+        virtualizationType: hvm
+        instanceType: t2.micro
+        sourceAmi: ami-9eaa1cf6
+        sshUserName: ubuntu
+      - region: us-west-2
+        virtualizationType: hvm
+        instanceType: t2.micro
+        sourceAmi: ami-3d50120d
+        sshUserName: ubuntu
+      - region: us-west-1
+        virtualizationType: hvm
+        instanceType: t2.micro
+        sourceAmi: ami-06116566
+        sshUserName: ubuntu
+      - region: us-west-2
+        virtualizationType: pv
+        instanceType: m3.medium
+        sourceAmi: ami-37501207
+        sshUserName: ubuntu
+
+docker:
+  enabled: false
+  bakeryDefaults:
+    targetRepository: ${DOCKER_TARGET_REPOSITORY:}
+    templateFile: docker.json
+    baseImages:
+    - baseImage:
+        id: precise
+        shortDescription: v12.04
+        detailedDescription: Ubuntu Precise Pangolin v12.04
+        packageType: deb
+      virtualizationSettings:
+        sourceImage: ubuntu:precise
+    - baseImage:
+        id: trusty
+        shortDescription: v14.04
+        detailedDescription: Ubuntu Trusty Tahr v14.04
+        packageType: deb
+      virtualizationSettings:
+        sourceImage: ubuntu:trusty
+
+google:
+  enabled: false
+  gce:
+    bakeryDefaults:
+      zone: us-central1-f
+      useInternalIp: false
+      templateFile: gce.json
+      baseImages:
+      - baseImage:
+          id: precise
+          shortDescription: v12.04
+          detailedDescription: Ubuntu Precise Pangolin v12.04
+          packageType: deb
+        virtualizationSettings:
+          sourceImage: ubuntu-1204-precise-v20150910
+      - baseImage:
+          id: trusty
+          shortDescription: v14.04
+          detailedDescription: Ubuntu Trusty Tahr v14.04
+          packageType: deb
+        virtualizationSettings:
+          sourceImage: ubuntu-1404-trusty-v20150909a
+
+swagger:
+  enabled: true
+  title: Spinnaker Rosco API
+  description:
+  contact:
+  patterns:
+    - .*api/v1.*
+    - /bakeOptions.*
+
