@@ -1,6 +1,6 @@
 bakery:
   allowMissingPackageInstallation: true
-  baseUrl: http://spinnaker-rosco:8087
+  baseUrl: http://rosco-alias:8087
   extractBuildDetails: true
   propagateCloudProviderType: true
 default:
