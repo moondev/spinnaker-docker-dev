@@ -15,8 +15,8 @@ def handleRemoveReadonly(func, path, exc): # Delete readonly files (windows)
 
 if os.path.exists("services"):
     shutil.rmtree("services", ignore_errors=False, onerror=handleRemoveReadonly)
-else:
-    cmd("mkdir services")
+
+cmd("mkdir services")
 
 for service in services:
     cmd("git clone https://github.com/spinnaker/" + service + ".git services/" + service)
@@ -26,5 +26,5 @@ for service in services:
 print "building deck"
 cmd("git clone https://github.com/spinnaker/deck.git services/deck")
 deckPath = os.path.abspath("services/deck")
-cmd('docker run --rm -v ' + deckPath + ':/build -e AUTH_ENABLED=false -e API_HOST=/gate -e BAKERY_DETAIL_URL=/bakery quay.io/spinnaker/deck bash -c "cd /build; npm install; npm run build"')
+cmd('docker run --rm -v ' + deckPath + ':/build -e AUTH_ENABLED=false -e API_HOST=/gate -e BAKERY_DETAIL_URL=/bakery quay.io/spinnaker/deck bash -c "ulimit -n 2048; cd /build; npm install; npm run build"')
 print "deck built inside services/deck/build/webpack"
