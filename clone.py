@@ -26,5 +26,5 @@ for service in services:
 print "building deck"
 cmd("git clone https://github.com/spinnaker/deck.git services/deck")
 deckPath = os.path.abspath("services/deck")
-cmd('docker run --rm -v ' + deckPath + ':/build -e AUTH_ENABLED=false -e API_HOST=/gate -e BAKERY_DETAIL_URL=/bakery quay.io/spinnaker/deck bash -c "cd /build; npm install; npm run build"')
+cmd('docker run --rm -v ' + deckPath + ':/build -e AUTH_ENABLED=false -e API_HOST=/gate -e BAKERY_DETAIL_URL=/bakery quay.io/spinnaker/deck bash -c "ulimit -n 2048; cd /build; npm install; npm run build"')
 print "deck built inside services/deck/build/webpack"
