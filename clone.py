@@ -15,8 +15,8 @@ def handleRemoveReadonly(func, path, exc): # Delete readonly files (windows)
 
 if os.path.exists("services"):
     shutil.rmtree("services", ignore_errors=False, onerror=handleRemoveReadonly)
-else:
-    cmd("mkdir services")
+
+cmd("mkdir services")
 
 for service in services:
     cmd("git clone https://github.com/spinnaker/" + service + ".git services/" + service)
